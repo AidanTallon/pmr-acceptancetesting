@@ -24,3 +24,9 @@ Feature: Navigation
     Then I should see the settings overlay
     When I click the settings button again
     Then I should see the main screen
+
+  Scenario: Viewing the Share overlay
+    When I click the share button
+    Then I should see the share overlay
+    When I click the share button again
+    Then I should see the main screen
