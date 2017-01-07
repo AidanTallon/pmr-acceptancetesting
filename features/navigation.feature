@@ -30,3 +30,11 @@ Feature: Navigation
     Then I should see the share overlay
     When I click the share button again
     Then I should see the main screen
+
+  Scenario: Viewing overlays in succession
+    When I click the share button
+    Then I should see the share overlay
+    When I click the settings button
+    Then I should see the settings overlay
+    When I click the settings button again
+    Then I should see the main screen
