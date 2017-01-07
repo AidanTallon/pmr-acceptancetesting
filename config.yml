@@ -5,7 +5,7 @@ defaults: &execution_defaults
 
 local:
   <<: *execution_defaults
-  base_url: https://localhost:5000
+  base_url: localhost:5000
 
 production:
   <<: *execution_defaults
