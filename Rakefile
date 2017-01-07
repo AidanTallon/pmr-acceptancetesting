@@ -77,7 +77,7 @@ Run 'rake clean' to clear out generated logs and reports.
 -----------------------------------------------------------
 Optional flags to pass into the Environment:
 
-  CONFIG=ci, ft, uat, or rc (defaults to 'ci')
+  CONFIG=production, local (defaults to 'production')
   BROWSER=firefox, chrome or ie (defaults to 'chrome')
   TAGS=@foo
 -----------------------------------------------------------
