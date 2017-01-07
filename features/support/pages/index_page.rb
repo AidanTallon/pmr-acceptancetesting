@@ -28,9 +28,7 @@ class IndexPage < GenericPage
       options.each do |key, screen|
         next if key == :none
         begin
-          Watir::Wait.until(timeout: 2) do
-            @browser.div(id: screen).style.include? 'height: 0%'
-          end
+          Watir::Wait.until(timeout: 2) { @browser.div(id: screen).style.include? 'height: 0%' }
         rescue
           return false
         end
