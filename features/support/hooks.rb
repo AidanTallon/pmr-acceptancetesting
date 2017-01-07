@@ -25,8 +25,6 @@ After do |scenario|
       image = App.browser.screenshot.base64
       embed "data:image/png;base64,#{image}", 'image/png'
     end
-
-    App.logout
   end
 
   # After all features have executed

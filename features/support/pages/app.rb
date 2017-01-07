@@ -18,9 +18,5 @@ class App
     @@browser.quit
   end
 
-  def self.logout
-    @@browser.goto "#{EnvConfig.base_url}/logout"
-  end
-
   private_class_method :new
 end
