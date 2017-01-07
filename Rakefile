@@ -59,7 +59,7 @@ end
 
 desc "Run pry instance in test environment"
 Cucumber::Rake::Task.new :pry, "Run pry instance in test environment." do |t|
-  t.cucumber_opts = "-t @pry"
+  t.profile = 'pry'
 end
 
 # Generate HTML docs from README

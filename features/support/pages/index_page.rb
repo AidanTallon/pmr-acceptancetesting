@@ -25,9 +25,15 @@ class IndexPage < GenericPage
       share: 'ShareOverlay'
     }
     if overlay == :none
-      options.each do |screen, value|
-        next if screen == :none
-        return false if overlay_visible? screen
+      options.each do |key, screen|
+        next if key == :none
+        begin
+          Watir::Wait.until(timeout: 2) do
+            @browser.div(id: screen).style.include? 'height: 0%'
+          end
+        rescue
+          return false
+        end
       end
     elsif options.keys.include? overlay
       begin
