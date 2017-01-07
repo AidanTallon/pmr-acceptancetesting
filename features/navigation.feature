@@ -19,3 +19,8 @@ Feature: Navigation
     When I click the about button again
     Then I should see the main screen
 
+  Scenario: Viewing the Settings overlay
+    When I click the settings button
+    Then I should see the settings overlay
+    When I click the settings button again
+    Then I should see the main screen

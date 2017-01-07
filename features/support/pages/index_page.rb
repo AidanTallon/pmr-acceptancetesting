@@ -9,7 +9,8 @@ class IndexPage < GenericPage
   def click_overlay_button(button)
     options = {
       help: 'clickHelpNav()',
-      about: 'clickAboutNav()'
+      about: 'clickAboutNav()',
+      settings: 'clickSettingsNav()'
     }
     @browser.div(id: 'Toolbar').button(onclick: options[button]).click
   end
@@ -18,7 +19,8 @@ class IndexPage < GenericPage
     options = {
       none: '',
       help: 'HelpOverlay',
-      about: 'AboutOverlay'
+      about: 'AboutOverlay',
+      settings: 'SettingsOverlay'
     }
     if overlay == :none
       options.each do |screen, value|
