@@ -6,14 +6,19 @@ class IndexPage < GenericPage
     @trait = @browser.div(id: 'Toolbar') # RUBBISH TRAIT. NEEDS TO CHANGE
   end
 
-  def click_help
-    @browser.div(id: 'Toolbar').button(onclick: 'clickHelpNav()').click
+  def click_overlay_button(button)
+    options = {
+      help: 'clickHelpNav()',
+      about: 'clickAboutNav()'
+    }
+    @browser.div(id: 'Toolbar').button(onclick: options[button]).click
   end
 
   def overlay_visible?(overlay)
     options = {
       none: '',
-      help: 'HelpOverlay'
+      help: 'HelpOverlay',
+      about: 'AboutOverlay'
     }
     if overlay == :none
       options.each do |screen, value|
