@@ -1,7 +1,7 @@
-default: -t ~@manual -t ~@wip -t ~@failing -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
-wip: -t @wip -t @manual <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
-all: -t ~@off -t ~@manual <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
-failing: -t @failing -t ~@wip -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+default: -t ~@pry -t ~@manual -t ~@wip -t ~@failing -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+wip: -t ~@pry -t @wip -t @manual <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+all: -t ~@pry -t ~@off -t ~@manual <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+failing: -t ~@pry -t @failing -t ~@wip -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
 list-tags: -d -f Cucumber::Formatter::ListTags
-clean_features: -t ~@manual -t @~wip -t ~@failing -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
-smoke_features: -t ~@manual -t ~@wip -t ~@failing -t ~@off -t @smoke <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+clean_features: -t ~@pry -t ~@manual -t ~@wip -t ~@failing -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+smoke_features: -t ~@pry -t ~@manual -t ~@wip -t ~@failing -t ~@off -t @smoke <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
