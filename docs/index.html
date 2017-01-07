@@ -1,0 +1,53 @@
+<html><head><title>Pokken Matchup Recorder Automation Suite Documentation</title><link href="prettify.css" type="text/css" rel="stylesheet" /><script type="text/javascript" src="prettify.js"></script><link href="styles.css" rel="stylesheet"></head><body onload="prettyPrint()"><article class="markdown-body entry-content"><h1>Pokken Matchup Recorder Acceptance Testing</h1>
+
+<p>You can view this README as an HTML document by running <code class="prettyprint">rake generate_docs</code> and visiting ./docs/index.html</p>
+
+<p>Acceptance testing for the Pokken Matchup Recorder app using Cucumber and Watir.
+github: https://github.com/AidanTallon/PokkenMatchupRecorder
+live app: https://pokken-matchup-recorder.herokuapp.com</p>
+
+<h1>Using these tests</h1>
+
+<p><code class="prettyprint">bundle exec rake production</code> runs tests for checking all of system health.
+<code class="prettyprint">bundle exec rake smoke</code> runs smoke tests for system.</p>
+
+<h1>Test Setup</h1>
+
+<h2>Strategy</h2>
+
+<p>Test all aspects of the app accessing the UI elements with Watir. All aspects should be fully automated where possible.</p>
+
+<h2>Features</h2>
+
+<p>The acceptance tests should be high-level and detail behaviour of the system.</p>
+
+<h2>Page Objects &amp; the App class</h2>
+
+<p>TODO</p>
+
+<h2>Step Definitions</h2>
+
+<p>Describes the actions to be taken in a test.
+Logic should be handled within an appropriate page object, so that the step definitions can be kept as &#39;skinny&#39; as possible.</p>
+
+<h2>Project Structure</h2>
+
+<p>TODO</p>
+
+<h2>Tagging Policy</h2>
+
+<p><code class="prettyprint">@manual</code>
+<code class="prettyprint">@wip</code>
+<code class="prettyprint">@failing</code>
+<code class="prettyprint">@off</code></p>
+
+<p>TODO</p>
+
+<h2>Rake Tasks</h2>
+
+<p>TODO</p>
+
+<h2>Using IRB inside the application</h2>
+
+<p>TODO</p>
+</article></script></body></html

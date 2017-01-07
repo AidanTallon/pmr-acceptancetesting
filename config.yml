@@ -1,0 +1,12 @@
+# Access to the data in this file is provided through the EnvConfig class - see lib/env_config.rb
+
+defaults: &execution_defaults
+  default_config: production
+
+local:
+  <<: *execution_defaults
+  base_url: https://localhost:5000
+
+production:
+  <<: *execution_defaults
+  base_url: https://pokken-matchup-recorder.herokuapp.com

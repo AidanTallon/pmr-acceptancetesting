@@ -36,6 +36,11 @@ TODO
 
 ## Tagging Policy
 
+`@manual`
+`@wip`
+`@failing`
+`@off`
+
 TODO
 
 ## Rake Tasks
