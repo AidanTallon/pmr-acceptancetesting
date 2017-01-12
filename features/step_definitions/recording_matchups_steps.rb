@@ -23,21 +23,28 @@ Then /^this value should be accurately recorded and displayed$/ do
 end
 
 When /^I click a character$/ do
-  pending
+  @char1 = :lucario
+  App.index_page.click_character @char1
 end
 
 Then /^the character should appear$/ do
-  pending
+  raise 'Primary character not appearing.' unless App.index_page.primary_character_is? @char1
 end
 
 When /^I click another character$/ do
-  pending
+  @char2 = :shadow_mewtwo
+  App.index_page.click_character @char2
 end
 
 Then /^both characters should appear$/ do
-  pending
+  raise 'Primary character not appearing.' unless App.index_page.primary_character_is? @char1
+  raise 'Secondary character not appearing.' unless App.index_page.secondary_character_is? @char2
 end
 
 Then /^informative text should be displayed$/ do
   pending
+  text = App.index_page.get_middle_select_text
+  unless text.include? @char1.to_s and text.include? @char2.to_s
+    raise 'Helper text error.'
+  end
 end

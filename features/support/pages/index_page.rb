@@ -1,29 +1,32 @@
 class IndexPage < GenericPage
 
-  @char_div_mapper = { # Is subject to change!
-    darkrai:       'CharDiv00',
-    blaziken:      'CharDiv01',
-    pikachu:       'CharDiv02',
-    lucario:       'CharDiv03',
-    gardevoir:     'CharDiv04',
-    pikachu_libre: 'CharDiv05',
-    sceptile:      'CharDiv11',
-    gengar:        'CharDiv12',
-    machamp:       'CharDiv14',
-    braixen:       'CharDiv15',
-    mewtwo:        'CharDiv20',
-    chandelure:    'CharDiv21',
-    suicune:       'CharDiv22',
-    weavile:       'CharDiv23',
-    charizard:     'CharDiv24',
-    garchomp:      'CharDiv25',
-    shadow_mewtwo: 'CharDiv26'
-  }
 
   def initialize(browser)
     super browser
     @url = EnvConfig.base_url
     @trait = @browser.div(id: 'Toolbar') # RUBBISH TRAIT. NEEDS TO CHANGE
+  end
+
+  def char_div_mapper
+    { # Is subject to change!
+      darkrai:       'CharDiv00',
+      blaziken:      'CharDiv01',
+      pikachu:       'CharDiv02',
+      lucario:       'CharDiv03',
+      gardevoir:     'CharDiv04',
+      pikachu_libre: 'CharDiv05',
+      sceptile:      'CharDiv11',
+      gengar:        'CharDiv12',
+      machamp:       'CharDiv14',
+      braixen:       'CharDiv15',
+      mewtwo:        'CharDiv20',
+      chandelure:    'CharDiv21',
+      suicune:       'CharDiv22',
+      weavile:       'CharDiv23',
+      charizard:     'CharDiv24',
+      garchomp:      'CharDiv25',
+      shadow_mewtwo: 'CharDiv26'
+    }
   end
 
   def click_overlay_button(button)
@@ -63,8 +66,8 @@ class IndexPage < GenericPage
   end
 
   def assign_matchup_value(char1, char2, value)
-    char_div_1 = @browser.div(id: @char_div_mapper[char1.to_sym])
-    char_div_2 = @browser.div(id: @char_div_mapper[char2.to_sym])
+    char_div_1 = @browser.div(id: char_div_mapper[char1.to_sym])
+    char_div_2 = @browser.div(id: char_div_mapper[char2.to_sym])
     click_character char1
     click_character char2
     set_matchup_value value
@@ -72,7 +75,7 @@ class IndexPage < GenericPage
   end
 
   def click_character(char)
-    char_div = @browser.div(id: @char_div_mapper[char1.to_sym])
+    char_div = @browser.div(id: char_div_mapper[char.to_sym])
     char_div.button.click
   end
 
@@ -84,7 +87,35 @@ class IndexPage < GenericPage
     @browser.div(class: 'MiddleSelectDiv').button(class: 'SubmitButton').click
   end
 
+  def get_middle_select_text
+    @browser.div(class: 'MiddleSelectDiv').text
+  end
 
+  def selected_characters_are?(params)
+    if params[:primary]
+      return false unless primary_character_is? params[:primary]
+    end
+    if params[:secondary]
+      return false unless secondary_character_is? params[:secondary]
+    end
+  end
 
+  def primary_character_is?(char)
+    begin
+      Watir::Wait.until(timeout: 3) { @browser.img(id: 'CharOnePortrait').src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png" }
+      return true
+    rescue
+      return false
+    end
+  end
+
+  def secondary_character_is?(char)
+    begin
+      Watir::Wait.until(timeout: 3) { @browser.img(id: 'CharTwoPortrait').src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png" }
+      return true
+    rescue
+      return false
+    end
+  end
 
 end
