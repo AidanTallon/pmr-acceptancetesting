@@ -55,7 +55,7 @@ TODO
 
 Codeship runs the following commands on every push to github
 ```
-rvm use $(cat .ruby-version)
+rvm use $(cat .ruby-version) --install
 bundle install
 
 bundle exec rake production
