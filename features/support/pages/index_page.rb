@@ -83,6 +83,34 @@ class IndexPage < GenericPage
     char_div.button.click
   end
 
+  def set_characters(primary, secondary=:none)
+    current_primary_char = get_primary_character
+    current_secondary_char = get_secondary_character
+    deselect_primary_character
+    if primary == :none
+      return
+    else
+      click_character current_primary_char.to_sym unless current_primary_char == nil
+      click_character primary.to_sym
+    end
+    if secondary == :none
+      return
+    else
+      click_character current_secondary_char.to_sym unless current_secondary_char == nil
+      click_character secondary.to_sym
+    end
+  end
+
+  def deselect_primary_character
+    button = @browser.button(id: 'CharOneRemoveButton')
+    button.click if button.visible?
+  end
+
+  def deselect_secondary_character
+    button = @browser.button(id: 'CharTwoRemoveButton')
+    button.click if button.visible?
+  end
+
   def set_matchup_value(value)
     #TODO: HOW!!!
   end
@@ -106,7 +134,10 @@ class IndexPage < GenericPage
 
   def primary_character_is?(char)
     begin
-      Watir::Wait.until(timeout: 3) { @browser.img(id: 'CharOnePortrait').src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png" }
+      Watir::Wait.until(timeout: 3) do
+        image = @browser.img(id: 'CharOnePortrait')
+        image.visible? and image.src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png"
+      end
       return true
     rescue
       return false
@@ -115,11 +146,30 @@ class IndexPage < GenericPage
 
   def secondary_character_is?(char)
     begin
-      Watir::Wait.until(timeout: 3) { @browser.img(id: 'CharTwoPortrait').src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png" }
+      Watir::Wait.until(timeout: 3) do
+        image = @browser.img(id: 'CharTwoPortrait')
+        image.visible? and image.src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png"
+      end
       return true
     rescue
       return false
     end
+  end
+
+  def get_primary_character # Looks at image src. This should be reviewed!
+    image = @browser.img(id: 'CharOnePortrait')
+    return nil unless image.visible?
+    match = image.src.match /img\/portraits\/(.+)\.png/
+    return nil if match == nil
+    match.captures[0].gsub(' ', '_')
+  end
+
+  def get_secondary_character
+    image = @browser.img(id: 'CharTwoPortrait')
+    return nil unless image.visible?
+    match = image.src.match /img\/portraits\/(.+)\.png/
+    return nil if match == nil
+    match.captures[0].gsub(' ', '_')
   end
 
   def track_bar_enabled?
@@ -134,5 +184,9 @@ class IndexPage < GenericPage
     char_div_mapper.each do |key, value|
       return false if matchup_label_for(key).text != ''
     end
+  end
+
+  def get_middle_select_text
+    @browser.span(id: 'HelperText').text
   end
 end

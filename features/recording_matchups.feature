@@ -17,7 +17,6 @@ Feature: Recording matchups
     When I assign a matchup value for two characters
     Then this value should be accurately recorded and displayed
 
-  @wip
   Scenario: Selecting characters
     When I click a character
     Then the character should appear

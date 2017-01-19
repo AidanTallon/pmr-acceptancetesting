@@ -19,7 +19,18 @@ When /^I assign a matchup value for two characters$/ do
 end
 
 Then /^this value should be accurately recorded and displayed$/ do
-  pending
+  App.index_page.set_characters @char1
+  expected_value_1 = '2'
+  displayed_value_1 = App.index_page.matchup_label_for(@char2).text
+  unless expected_value_1 == displayed_value_1
+    raise "Error displaying matchup label value. Expected: #{expect_value_1}. Got: #{displayed_value_1}."
+  end
+  App.index_page.set_characters @char2
+  expected_value_2 = '-2'
+  displayed_value_2 = App.index_page.matchup_label_for(@char1).text
+  unless expected_value_2 == displayed_value_2
+    raise "Error displaying matchup label value. Expected: #{expect_value_2}. Got: #{displayed_value_2}"
+  end
 end
 
 When /^I click a character$/ do
@@ -42,9 +53,10 @@ Then /^both characters should appear$/ do
 end
 
 Then /^informative text should be displayed$/ do
-  pending
   text = App.index_page.get_middle_select_text
-  unless text.include? @char1.to_s and text.include? @char2.to_s
+  char1_text = @char1.to_s.gsub('_', ' ').split(' ').map(&:capitalize).join(' ')
+  char2_text = @char2.to_s.gsub('_', ' ').split(' ').map(&:capitalize).join(' ')
+  unless text.include? char1_text and text.include? char2_text
     raise 'Helper text error.'
   end
 end
