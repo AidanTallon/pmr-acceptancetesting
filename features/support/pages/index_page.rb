@@ -125,4 +125,14 @@ class IndexPage < GenericPage
   def track_bar_enabled?
     track_bar.enabled?
   end
+
+  def matchup_label_for(character)
+    @browser.div(id: char_div_mapper[character.to_sym]).label(class: 'MatchupLabel')
+  end
+
+  def all_matchup_labels_blank?
+    char_div_mapper.each do |key, value|
+      return false if matchup_label_for(key).text != ''
+    end
+  end
 end

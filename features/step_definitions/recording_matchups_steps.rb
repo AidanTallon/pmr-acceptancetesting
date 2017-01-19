@@ -7,7 +7,7 @@ When /^no data has been inputted$/ do
 end
 
 Then /^there should be no matchup information displayed for any character$/ do
-  pending
+  raise 'At least one matchup label displaying value' unless App.index_page.all_matchup_labels_blank?
 end
 
 When /^I assign a matchup value for two characters$/ do

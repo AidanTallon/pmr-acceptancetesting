@@ -8,7 +8,6 @@ Feature: Recording matchups
     Given I am on the index page
     And the index page is in a default state
 
-  @wip
   Scenario: Page default state
     When no data has been inputted
     Then there should be no matchup information displayed for any character
