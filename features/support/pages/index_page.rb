@@ -29,6 +29,10 @@ class IndexPage < GenericPage
     }
   end
 
+  def track_bar
+    @browser.input(id: 'MatchupTrackBar')
+  end
+
   def click_overlay_button(button)
     options = {
       help: 'clickHelpNav()',
@@ -118,4 +122,7 @@ class IndexPage < GenericPage
     end
   end
 
+  def track_bar_enabled?
+    track_bar.enabled?
+  end
 end

@@ -22,3 +22,12 @@ Feature: Recording matchups
     When I click another character
     Then both characters should appear
     And informative text should be displayed
+    And the matchup track bar should be enabled
+
+  Scenario: No characters selected
+    When no characters are selected
+    Then the matchup track bar should be disabled
+
+  Scenario: One character selected
+    When I click a character
+    Then the matchup track bar should be disabled

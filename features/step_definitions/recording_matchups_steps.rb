@@ -48,3 +48,16 @@ Then /^informative text should be displayed$/ do
     raise 'Helper text error.'
   end
 end
+
+When /^no characters are selected$/ do
+  # Don't need to do anything
+  # Can check that no characters are selected anyway?
+end
+
+Then /^the matchup track bar should be disabled$/ do
+  raise 'Track bar enabled. Expected to be disabled.' if App.index_page.track_bar_enabled?
+end
+
+Then /^the matchup track bar should be enabled$/ do
+  raise 'Track bar disabled. Expected to be enabled.' unless App.index_page.track_bar_enabled?
+end
