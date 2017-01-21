@@ -6,4 +6,7 @@ gem 'chromedriver-helper', '~>1.0.0'
 gem 'pry', '~>0.10.4'
 gem 'rake', '~>12.0.0'
 gem 'redcarpet', '~>3.4.0'
-gem 'rubocop', '~>0.47.1 '
+
+group :test do
+  gem 'rubocop', '~>0.47.1'
+end
