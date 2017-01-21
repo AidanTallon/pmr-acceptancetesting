@@ -70,11 +70,8 @@ class IndexPage < GenericPage
   end
 
   def assign_matchup_value(char1, char2, value)
-    char_div_1 = @browser.div(id: char_div_mapper[char1.to_sym])
-    char_div_2 = @browser.div(id: char_div_mapper[char2.to_sym])
-    click_character char1
-    click_character char2
-    set_matchup_value value
+    set_characters(char1, char2)
+    set_range_input value
     click_submit
   end
 
@@ -90,14 +87,12 @@ class IndexPage < GenericPage
     if primary == :none
       return
     else
-      click_character current_primary_char.to_sym unless current_primary_char == nil
       click_character primary.to_sym
-    end
-    if secondary == :none
-      return
-    else
-      click_character current_secondary_char.to_sym unless current_secondary_char == nil
-      click_character secondary.to_sym
+      if secondary == :none
+        return
+      else
+        click_character secondary.to_sym
+      end
     end
   end
 
@@ -111,8 +106,18 @@ class IndexPage < GenericPage
     button.click if button.visible?
   end
 
-  def set_matchup_value(value)
-    #TODO: HOW!!!
+  def set_range_input(value)
+    range = @browser.input(id: 'MatchupTrackBar')
+    range.click # Click to reset to 0
+    if value > 0
+      value.times do
+        range.send_keys :arrow_right
+      end
+    elsif value < 0
+      -value.times do
+        range.send_keys :arrow_left
+      end
+    end
   end
 
   def click_submit

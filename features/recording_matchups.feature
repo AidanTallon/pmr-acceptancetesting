@@ -12,7 +12,6 @@ Feature: Recording matchups
     When no data has been inputted
     Then there should be no matchup information displayed for any character
 
-  @wip
   Scenario: Recording a matchup
     When I assign a matchup value for two characters
     Then this value should be accurately recorded and displayed

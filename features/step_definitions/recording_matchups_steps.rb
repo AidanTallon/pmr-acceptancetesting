@@ -11,7 +11,6 @@ Then /^there should be no matchup information displayed for any character$/ do
 end
 
 When /^I assign a matchup value for two characters$/ do
-  pending
   @char1 = :charizard
   @char2 = :pikachu
   @value = 2
@@ -23,13 +22,13 @@ Then /^this value should be accurately recorded and displayed$/ do
   expected_value_1 = '2'
   displayed_value_1 = App.index_page.matchup_label_for(@char2).text
   unless expected_value_1 == displayed_value_1
-    raise "Error displaying matchup label value. Expected: #{expect_value_1}. Got: #{displayed_value_1}."
+    raise "Error displaying matchup label value. Expected: #{expected_value_1}. Got: #{displayed_value_1}."
   end
   App.index_page.set_characters @char2
   expected_value_2 = '-2'
   displayed_value_2 = App.index_page.matchup_label_for(@char1).text
   unless expected_value_2 == displayed_value_2
-    raise "Error displaying matchup label value. Expected: #{expect_value_2}. Got: #{displayed_value_2}"
+    raise "Error displaying matchup label value. Expected: #{expected_value_2}. Got: #{displayed_value_2}"
   end
 end
 
