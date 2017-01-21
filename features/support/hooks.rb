@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Setup browser
 begin
   retries ||= 0

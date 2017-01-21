@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
+# Index page. Use like App.index_page
 class IndexPage < GenericPage
-
-
   def initialize(browser)
     super browser
     @url = EnvConfig.base_url
@@ -55,14 +56,18 @@ class IndexPage < GenericPage
       options.each do |key, screen|
         next if key == :none
         begin
-          Watir::Wait.until(timeout: 2) { @browser.div(id: screen).style.include? 'height: 0%' }
+          Watir::Wait.until(timeout: 2) do
+            @browser.div(id: screen).style.include? 'height: 0%'
+          end
         rescue
           return false
         end
       end
     elsif options.keys.include? overlay
       begin
-        Watir::Wait.until(timeout: 2) { @browser.div(id: options[overlay]).style.include? 'height: 100%' }
+        Watir::Wait.until(timeout: 2) do
+          @browser.div(id: options[overlay]).style.include? 'height: 100%'
+        end
       rescue
         return false
       end
@@ -80,9 +85,7 @@ class IndexPage < GenericPage
     char_div.button.click
   end
 
-  def set_characters(primary, secondary=:none)
-    current_primary_char = get_primary_character
-    current_secondary_char = get_secondary_character
+  def set_characters(primary, secondary = :none)
     deselect_primary_character
     if primary == :none
       return
@@ -109,11 +112,11 @@ class IndexPage < GenericPage
   def set_range_input(value)
     range = @browser.input(id: 'MatchupTrackBar')
     range.click # Click to reset to 0
-    if value > 0
+    if value.positive?
       value.times do
         range.send_keys :arrow_right
       end
-    elsif value < 0
+    elsif value.negative?
       -value.times do
         range.send_keys :arrow_left
       end
@@ -122,10 +125,6 @@ class IndexPage < GenericPage
 
   def click_submit
     @browser.div(class: 'MiddleSelectDiv').button(class: 'SubmitButton').click
-  end
-
-  def get_middle_select_text
-    @browser.div(class: 'MiddleSelectDiv').text
   end
 
   def selected_characters_are?(params)
@@ -141,7 +140,7 @@ class IndexPage < GenericPage
     begin
       Watir::Wait.until(timeout: 3) do
         image = @browser.img(id: 'CharOnePortrait')
-        image.visible? and image.src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png"
+        image.visible? and image.src.include? "img/portraits/#{char.to_s.delete('_')}.png"
       end
       return true
     rescue
@@ -153,7 +152,7 @@ class IndexPage < GenericPage
     begin
       Watir::Wait.until(timeout: 3) do
         image = @browser.img(id: 'CharTwoPortrait')
-        image.visible? and image.src.include? "img/portraits/#{char.to_s.gsub('_', '')}.png"
+        image.visible? and image.src.include? "img/portraits/#{char.to_s.delete('_')}.png"
       end
       return true
     rescue
@@ -164,34 +163,34 @@ class IndexPage < GenericPage
   def get_primary_character # Looks at image src. This should be reviewed!
     image = @browser.img(id: 'CharOnePortrait')
     return nil unless image.visible?
-    match = image.src.match /img\/portraits\/(.+)\.png/
-    return nil if match == nil
-    match.captures[0].gsub(' ', '_')
+    match = image.src.match %r{img/portraits/(.+)\.png}
+    return nil if match.nil?
+    match.captures[0].tr(' ', '_')
   end
 
   def get_secondary_character
     image = @browser.img(id: 'CharTwoPortrait')
     return nil unless image.visible?
-    match = image.src.match /img\/portraits\/(.+)\.png/
-    return nil if match == nil
-    match.captures[0].gsub(' ', '_')
+    match = image.src.match %r{img/portraits/(.+)\.png}
+    return nil if match.nil?
+    match.captures[0].tr(' ', '_')
   end
 
   def track_bar_enabled?
     track_bar.enabled?
   end
 
-  def matchup_label_for(character)
-    @browser.div(id: char_div_mapper[character.to_sym]).label(class: 'MatchupLabel')
+  def matchup_label_for(char)
+    @browser.div(id: char_div_mapper[char.to_sym]).label(class: 'MatchupLabel')
   end
 
   def all_matchup_labels_blank?
-    char_div_mapper.each do |key, value|
+    char_div_mapper.each do |key, _value|
       return false if matchup_label_for(key).text != ''
     end
   end
 
-  def get_middle_select_text
+  def helper_text
     @browser.span(id: 'HelperText').text
   end
 end

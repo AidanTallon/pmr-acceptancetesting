@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given /^the index page is in a default state$/ do
   # no action needs to be taken as previous step already reloads page
 end
@@ -21,18 +23,18 @@ end
 
 Then /^this value should be accurately recorded and displayed$/ do
   App.index_page.set_characters @char1
-  expected_value_1 = '2'
-  displayed_value_1 = App.index_page.matchup_label_for(@char2).text
-  unless expected_value_1 == displayed_value_1
+  expected_value1 = '2'
+  displayed_value1 = App.index_page.matchup_label_for(@char2).text
+  unless expected_value1 == displayed_value1
     raise "Error displaying matchup label value.
-      Expected: #{expected_value_1}. Got: #{displayed_value_1}."
+      Expected: #{expected_value1}. Got: #{displayed_value1}."
   end
   App.index_page.set_characters @char2
-  expected_value_2 = '-2'
-  displayed_value_2 = App.index_page.matchup_label_for(@char1).text
-  unless expected_value_2 == displayed_value_2
+  expected_value2 = '-2'
+  displayed_value2 = App.index_page.matchup_label_for(@char1).text
+  unless expected_value2 == displayed_value2
     raise "Error displaying matchup label value.
-      Expected: #{expected_value_2}. Got: #{displayed_value_2}"
+      Expected: #{expected_value2}. Got: #{displayed_value2}"
   end
 end
 
@@ -62,7 +64,7 @@ Then /^both characters should appear$/ do
 end
 
 Then /^informative text should be displayed$/ do
-  text = App.index_page.get_middle_select_text
+  text = App.index_page.helper_text
   char1_text = @char1.to_s.tr('_', ' ').split(' ').map(&:capitalize).join(' ')
   char2_text = @char2.to_s.tr('_', ' ').split(' ').map(&:capitalize).join(' ')
   if !(text.include? char1_text) || !(text.include? char2_text)

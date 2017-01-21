@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given /^I am on the index page$/ do
   App.index_page.visit
 end

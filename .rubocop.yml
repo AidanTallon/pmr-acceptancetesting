@@ -1,0 +1,3 @@
+AmbiguousRegexpLiteral:
+  Exclude:
+    - features/step_definitions/*.rb
