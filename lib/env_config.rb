@@ -29,7 +29,7 @@ class EnvConfig
 
     load_test_data
 
-    # The environment-specific config and the test data are accessible as @config
+    # The environment-specific config and test data are accessible as @config
     @config = config_file[@environment]
     @config['data'] = @test_data
   end
@@ -54,22 +54,23 @@ class EnvConfig
   end
 
   def value_for(key_name)
-    raise "There is no key '#{key_name}' for the config ' #{@environment}' in config.yml" if @config[key_name].nil?
-    @config[key_name]
+    if @config[key_name].nil?
+      raise "There is no key '#{key_name}' for the config ' #{@environment}' in config.yml"
+    else
+      @config[key_name]
+    end
   end
 
   private
-  
-    def load_environment(config_file)
-      # Get the current config setting from the environment. It should be passed in from the command line eg. CONFIG=ci (see rakefile)
-      # It will use default_config from config.yaml if nothing is passed in.
-      @environment = ENV['CONFIG']
 
+    def load_environment(config_file)
+      # Get the current config setting from the environment. It should be passed in from the command line
+      # eg. CONFIG=ci (see rakefile)
+      # It will use default_config from config.yaml if nothing is passed in.
+      @environment = ENV['CONFIG'] || config_file.fetch('defaults').fetch('default_config')
+      # .fetch() will raise an error if the keys aren't found.
       if @environment.nil?
-        @environment = config_file.fetch('defaults').fetch('default_config') # .fetch() will raise an error if the keys aren't found.
-        if @environment.nil?
-          abort "Exiting: No CONFIG supplied from command line, and no default_config found in config.yml"
-        end
+        abort 'Exiting: No CONFIG supplied from command line, and no default_config found in config.yml'
       end
     end
 
@@ -91,6 +92,6 @@ class EnvConfig
       unless File.exist? config_yaml
         raise 'Oooops. config.yml could not be found'
       end
-      YAML.safe_load(File.open(config_yaml))
+      YAML.load(File.open(config_yaml))
     end
 end
