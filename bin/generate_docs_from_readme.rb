@@ -22,7 +22,7 @@ markdown = Redcarpet::Markdown.new(rndr,
 
 Dir.mkdir './docs/' unless Dir.exist? './docs/'
 
-html = """
+html = "
 <html>
   <head>
     <title>Pokken Matchup Recorder Automation Suite Documentation</title>
@@ -36,7 +36,7 @@ html = """
     </article>
   </body>
 </html>
-"""
+"
 
 File.open('./docs/index.html', 'w') do |f|
   f.write(html)
