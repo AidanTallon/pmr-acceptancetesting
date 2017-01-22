@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Contains rake tasks to make it easier to run cucumber from terminal
 
 require 'cucumber'
@@ -11,7 +13,7 @@ CLEAN.include('results/rerun.txt',
               'logs/*.*')
 
 # Each profile is given a rake task
-profiles = YAML.load(File.open(File.join(Dir.pwd, 'cucumber.yml')))
+profiles = YAML.safe_load(File.open(File.join(Dir.pwd, 'cucumber.yml')))
 profiles.each do |name, value|
   desc "Run profile #{name}: #{value}"
   Cucumber::Rake::Task.new name.to_sym, "Run profile #{name}: #{value}" do |t|
@@ -20,55 +22,55 @@ profiles.each do |name, value|
 end
 
 # Creates an HTML report
-desc "Runs all features and outputs to HTML and rerun.txt"
-Cucumber::Rake::Task.new :report, "Output an HTML report and rerun.txt file to reports/" do |t|
+desc 'Runs all features and outputs to HTML and rerun.txt'
+Cucumber::Rake::Task.new :report, 'Output an HTML report and rerun.txt file to reports/' do |t|
   t.profile = 'default'
-  t.cucumber_opts = "--format html --out results/test_report.html --format rerun --out results/rerun.txt"
+  t.cucumber_opts = '--format html --out results/test_report.html --format rerun --out results/rerun.txt'
 end
 
 # Reruns tests that failed on the previous run
-desc "Rerun tests output by rake:output"
+desc 'Rerun tests output by rake:output'
 Cucumber::Rake::Task.new :rerun, "Rerun failed scenarios from 'report' rake task" do |t|
   t.profile = 'default'
-  t.cucumber_opts = "@results/rerun.txt -r features"
+  t.cucumber_opts = '@results/rerun.txt -r features'
 end
 
 # Run scenarios by tag
-desc "Run with tags"
+desc 'Run with tags'
 Cucumber::Rake::Task.new :t, "Run 'all' profile, pass tags as args." do |t|
   t.profile = 'all'
   ARGV.shift # Ignore the first value in ARGV (it will be the rake task name)
-  options = "--format rerun --out results/rerun.txt "
+  options = '--format rerun --out results/rerun.txt '
   ARGV.each do |tag|
     options.concat("-t #{tag} ") if tag =~ /^(?:@|~)/ # Only add arguments beginning with '@' or '~'
   end
   t.cucumber_opts = options
 end
 
-desc "Run production tasks"
-Cucumber::Rake::Task.new :production, "Run only tasks tagged with production." do |t|
+desc 'Run production tasks'
+Cucumber::Rake::Task.new :production, 'Run only tasks tagged with production.' do |t|
   t.profile = 'clean_features'
-  t.cucumber_opts = "--format pretty --format html --out results/report.html"
+  t.cucumber_opts = '--format pretty --format html --out results/report.html'
 end
 
-desc "Run smoke tasks"
-Cucumber::Rake::Task.new :smoke, "Run only tasks tagged with smoke." do |t|
+desc 'Run smoke tasks'
+Cucumber::Rake::Task.new :smoke, 'Run only tasks tagged with smoke.' do |t|
   t.profile = 'smoke_features'
-  t.cucumber_opts = "--format pretty --format html --out results/report.html"
+  t.cucumber_opts = '--format pretty --format html --out results/report.html'
 end
 
-desc "Run pry instance in test environment"
-Cucumber::Rake::Task.new :pry, "Run pry instance in test environment." do |t|
+desc 'Run pry instance in test environment'
+Cucumber::Rake::Task.new :pry, 'Run pry instance in test environment.' do |t|
   t.profile = 'pry_testing'
 end
 
 # Generate HTML docs from README
-task :generate_docs, "Generate HTML Documentation from the README.html" do
+task :generate_docs, 'Generate HTML Documentation from the README.html' do
   system 'ruby ./bin/generate_docs_from_readme.rb'
 end
 
 # Show help message
-task :help, "Show additional flags available" do
+task :help, 'Show additional flags available' do
   message = <<-MESSAGE
 
 Run 'rake -T' to see the available rake tasks.
