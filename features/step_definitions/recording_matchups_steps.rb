@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given /^the index page is in a default state$/ do
   # no action needs to be taken as previous step already reloads page
 end
@@ -7,7 +9,9 @@ When /^no data has been inputted$/ do
 end
 
 Then /^there should be no matchup information displayed for any character$/ do
-  raise 'At least one matchup label displaying value' unless App.index_page.all_matchup_labels_blank?
+  unless App.index_page.all_matchup_labels_blank?
+    raise 'At least one matchup label displaying value'
+  end
 end
 
 When /^I assign a matchup value for two characters$/ do
@@ -19,16 +23,18 @@ end
 
 Then /^this value should be accurately recorded and displayed$/ do
   App.index_page.set_characters @char1
-  expected_value_1 = '2'
-  displayed_value_1 = App.index_page.matchup_label_for(@char2).text
-  unless expected_value_1 == displayed_value_1
-    raise "Error displaying matchup label value. Expected: #{expected_value_1}. Got: #{displayed_value_1}."
+  expected_value1 = '2'
+  displayed_value1 = App.index_page.matchup_label_for(@char2).text
+  unless expected_value1 == displayed_value1
+    raise "Error displaying matchup label value.
+      Expected: #{expected_value1}. Got: #{displayed_value1}."
   end
   App.index_page.set_characters @char2
-  expected_value_2 = '-2'
-  displayed_value_2 = App.index_page.matchup_label_for(@char1).text
-  unless expected_value_2 == displayed_value_2
-    raise "Error displaying matchup label value. Expected: #{expected_value_2}. Got: #{displayed_value_2}"
+  expected_value2 = '-2'
+  displayed_value2 = App.index_page.matchup_label_for(@char1).text
+  unless expected_value2 == displayed_value2
+    raise "Error displaying matchup label value.
+      Expected: #{expected_value2}. Got: #{displayed_value2}"
   end
 end
 
@@ -38,7 +44,9 @@ When /^I click a character$/ do
 end
 
 Then /^the character should appear$/ do
-  raise 'Primary character not appearing.' unless App.index_page.primary_character_is? @char1
+  unless App.index_page.primary_character_is? @char1
+    raise 'Primary character not appearing.'
+  end
 end
 
 When /^I click another character$/ do
@@ -47,15 +55,19 @@ When /^I click another character$/ do
 end
 
 Then /^both characters should appear$/ do
-  raise 'Primary character not appearing.' unless App.index_page.primary_character_is? @char1
-  raise 'Secondary character not appearing.' unless App.index_page.secondary_character_is? @char2
+  unless App.index_page.primary_character_is? @char1
+    raise 'Primary character not appearing.'
+  end
+  unless App.index_page.secondary_character_is? @char2
+    raise 'Secondary character not appearing.'
+  end
 end
 
 Then /^informative text should be displayed$/ do
-  text = App.index_page.get_middle_select_text
-  char1_text = @char1.to_s.gsub('_', ' ').split(' ').map(&:capitalize).join(' ')
-  char2_text = @char2.to_s.gsub('_', ' ').split(' ').map(&:capitalize).join(' ')
-  unless text.include? char1_text and text.include? char2_text
+  text = App.index_page.helper_text
+  char1_text = @char1.to_s.tr('_', ' ').split(' ').map(&:capitalize).join(' ')
+  char2_text = @char2.to_s.tr('_', ' ').split(' ').map(&:capitalize).join(' ')
+  if !(text.include? char1_text) || !(text.include? char2_text)
     raise 'Helper text error.'
   end
 end
@@ -66,9 +78,13 @@ When /^no characters are selected$/ do
 end
 
 Then /^the matchup track bar should be disabled$/ do
-  raise 'Track bar enabled. Expected to be disabled.' if App.index_page.track_bar_enabled?
+  if App.index_page.track_bar_enabled?
+    raise 'Track bar enabled. Expected to be disabled.'
+  end
 end
 
 Then /^the matchup track bar should be enabled$/ do
-  raise 'Track bar disabled. Expected to be enabled.' unless App.index_page.track_bar_enabled?
+  unless App.index_page.track_bar_enabled?
+    raise 'Track bar disabled. Expected to be enabled.'
+  end
 end
