@@ -44,6 +44,10 @@ class EnvConfig
     instance.config[name.to_s].nil? ? super : instance.config[name.to_s]
   end
 
+  def self.respond_to_missing?(method_name, include_private = false)
+    instance.config[name.to_s].nil? ? super : true
+  end
+
   # Allow calls like EnvConfig.some_key
   def self.respond_to?(name)
     instance.config[name.to_s].nil? ? super : true
@@ -55,6 +59,7 @@ class EnvConfig
   end
 
   private
+  
     def load_environment(config_file)
       # Get the current config setting from the environment. It should be passed in from the command line eg. CONFIG=ci (see rakefile)
       # It will use default_config from config.yaml if nothing is passed in.
@@ -62,7 +67,9 @@ class EnvConfig
 
       if @environment.nil?
         @environment = config_file.fetch('defaults').fetch('default_config') # .fetch() will raise an error if the keys aren't found.
-        abort "Exiting: No CONFIG supplied from command line, and no default_config found in config.yml" if @environment.nil?
+        if @environment.nil?
+          abort "Exiting: No CONFIG supplied from command line, and no default_config found in config.yml"
+        end
       end
     end
 
@@ -70,9 +77,10 @@ class EnvConfig
       # Load in data files from /features/support/data/*
       @test_data = {}
 
-      puts "Loading test data YAML from data directory..."
-      Dir[File.dirname(__FILE__) + '/../features/support/data/*.yml'].each do |f|
-        data = YAML.load(File.open(f))
+      puts 'Loading test data YAML from data directory...'
+      dir = Dir[File.dirname(__FILE__) + '/../features/support/data/*.yml']
+      dir.each do |f|
+        data = YAML.safe_load(File.open(f))
         @test_data.merge!(data)
         puts "Loaded #{f}"
       end
@@ -80,7 +88,9 @@ class EnvConfig
 
     def load_config_yaml
       config_yaml = File.join(Dir.pwd, 'config.yml')
-      raise "Oooops. config.yml could not be found" unless File.exist?(config_yaml)
-      YAML.load(File.open(config_yaml))
+      unless File.exist? config_yaml
+        raise 'Oooops. config.yml could not be found'
+      end
+      YAML.safe_load(File.open(config_yaml))
     end
 end
