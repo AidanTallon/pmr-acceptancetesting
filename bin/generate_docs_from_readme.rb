@@ -33,7 +33,9 @@ html = """
   <body onload='prettyPrint()'>
     <article class='markdown-body entry-content'>
       #{markdown.render(@data)}
-    </article></script></body></html>
+    </article>
+  </body>
+</html>
 """
 
 File.open('./docs/index.html', 'w') do |f|
