@@ -11,33 +11,17 @@ markdown = Redcarpet::Markdown.new(rndr,
                                    prettify:                     true,
                                    no_intra_emphasis:            true,
                                    fenced_code_blocks:           true,
-                                   disable_indented_code_blocks: false,
+                                   disable_indented_code_blocks: true,
                                    strikethrough:                true,
                                    superscript:                  true,
                                    underline:                    true,
                                    highlight:                    true,
                                    tables:                       true,
-                                   quote:                        false,
+                                   quote:                        true,
                                    footnotes:                    true)
 
 Dir.mkdir './docs/' unless Dir.exist? './docs/'
 
-html = "
-<html>
-  <head>
-    <title>Pokken Matchup Recorder Automation Suite Documentation</title>
-    <link href='prettify.css' type='text/css' rel='stylesheet' />
-    <script type='text/javascript' src='prettify.js'></script>
-    <link href='styles.css' rel='stylesheet'>
-  </head>
-  <body onload='prettyPrint()'>
-    <article class='markdown-body entry-content'>
-      #{markdown.render(@data)}
-    </article>
-  </body>
-</html>
-"
-
 File.open('./docs/index.html', 'w') do |f|
-  f.write(html)
+  f.write(markdown.render(@data))
 end
