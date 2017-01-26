@@ -51,3 +51,15 @@ TODO
 
 TODO
 
+# CI
+
+Codeship runs the following commands on every push to github
+```
+rvm use $(cat .ruby-version) --install
+gem install bundler
+bundle install
+
+bundle exec rake production
+```
+
+

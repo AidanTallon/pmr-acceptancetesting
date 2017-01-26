@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Setup browser
 begin
   retries ||= 0
@@ -18,17 +20,17 @@ After do |scenario|
   # Output a screenshot (and video if HEADLESS) if the scenario failed
   if scenario.failed?
     output_path = File.expand_path(File.join(File.dirname(__FILE__), '/../../results/screenshots/'))
-      scenario_name = "#{Time.now.strftime('%Y%m%d-%H_%M_%S')}-#{scenario.name}"
-      output_path += '/' + scenario_name
-      App.browser.screenshot.save "#{output_path}.png"
+    scenario_name = "#{Time.now.strftime('%Y%m%d-%H_%M_%S')}-#{scenario.name}"
+    output_path += '/' + scenario_name
+    App.browser.screenshot.save "#{output_path}.png"
 
-      image = App.browser.screenshot.base64
-      embed "data:image/png;base64,#{image}", 'image/png'
-    end
+    image = App.browser.screenshot.base64
+    embed "data:image/png;base64,#{image}", 'image/png'
   end
+end
 
-  # After all features have executed
-  at_exit do
-    App.close!
-    headless.destroy if ENV['HEADLESS']
-  end
+# After all features have executed
+at_exit do
+  App.close!
+  headless.destroy if ENV['HEADLESS']
+end

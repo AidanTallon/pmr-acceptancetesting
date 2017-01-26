@@ -1,0 +1,8 @@
+AmbiguousRegexpLiteral:
+  Exclude:
+    - features/step_definitions/*.rb
+    - features/support/test_steps.rb
+
+Debugger:
+  Exclude:
+    - features/support/test_steps.rb
