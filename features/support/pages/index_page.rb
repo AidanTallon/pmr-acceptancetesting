@@ -5,7 +5,7 @@ class IndexPage < GenericPage
   def initialize(browser)
     super browser
     @url = EnvConfig.base_url
-    @trait = @browser.div(id: 'Toolbar') # RUBBISH TRAIT. NEEDS TO CHANGE
+    @trait = @browser.div(tid: 'toolbar') # RUBBISH TRAIT. NEEDS TO CHANGE
   end
 
   def char_div_mapper
@@ -36,21 +36,21 @@ class IndexPage < GenericPage
 
   def click_overlay_button(button)
     options = {
-      help: 'clickHelpNav()',
-      about: 'clickAboutNav()',
-      settings: 'clickSettingsNav()',
-      share: 'clickShareNav()'
+      help:     'help-button',
+      about:    'about-button',
+      settings: 'settings-button',
+      share:    'share-button'
     }
-    @browser.div(id: 'Toolbar').button(onclick: options[button]).click
+    @browser.button(tid: options[button]).click
   end
 
   def overlay_visible?(overlay)
     options = {
-      none: '',
-      help: 'HelpOverlay',
-      about: 'AboutOverlay',
+      none:     '',
+      help:     'HelpOverlay',
+      about:    'AboutOverlay',
       settings: 'SettingsOverlay',
-      share: 'ShareOverlay'
+      share:    'ShareOverlay'
     }
     if overlay == :none
       options.each do |key, screen|
@@ -110,7 +110,7 @@ class IndexPage < GenericPage
   end
 
   def set_range_input(value)
-    range = @browser.input(id: 'MatchupTrackBar')
+    range = @browser.input(tid: 'track-bar')
     range.click # Click to reset to 0
     if value.positive?
       value.times do
@@ -124,7 +124,7 @@ class IndexPage < GenericPage
   end
 
   def click_submit
-    @browser.div(class: 'MiddleSelectDiv').button(class: 'SubmitButton').click
+    @browser.button(tid: 'submit-matchup-button').click
   end
 
   def selected_characters_are?(params)
