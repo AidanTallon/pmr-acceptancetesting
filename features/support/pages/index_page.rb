@@ -31,46 +31,55 @@ class IndexPage < GenericPage
   end
 
   def track_bar
-    @browser.input(id: 'MatchupTrackBar')
+    @browser.input(tid: 'track-bar')
   end
 
-  def click_overlay_button(button)
+  def overlay_button(button)
     options = {
       help:     'help-button',
       about:    'about-button',
       settings: 'settings-button',
       share:    'share-button'
     }
-    @browser.button(tid: options[button]).click
+    @browser.button(tid: options[button])
   end
 
-  def overlay_visible?(overlay)
+  def overlay(name)
     options = {
-      none:     '',
-      help:     'HelpOverlay',
-      about:    'AboutOverlay',
-      settings: 'SettingsOverlay',
-      share:    'ShareOverlay'
+      help:     'help-overlay',
+      about:    'about-overlay',
+      settings: 'settings-overlay',
+      share:    'share-overlay'
     }
-    if overlay == :none
-      options.each do |key, screen|
-        next if key == :none
-        begin
-          Watir::Wait.until(timeout: 2) do
-            @browser.div(id: screen).style.include? 'height: 0%'
-          end
-        rescue
-          return false
-        end
-      end
-    elsif options.keys.include? overlay
+    @browser.div(tid: options[name])
+  end
+
+  def click_overlay_button(button)
+    overlay_button(button).click
+  end
+
+  def overlays_closed?
+    overlays = @browser.divs(tid: /.+-overlay/)
+    closed = true
+    overlays.each do |o|
       begin
         Watir::Wait.until(timeout: 2) do
-          @browser.div(id: options[overlay]).style.include? 'height: 100%'
+          o.style.include? 'height: 0%'
         end
       rescue
-        return false
+        closed = false
       end
+    end
+    return closed
+  end
+
+  def overlay_visible?(name)
+    begin
+      Watir::Wait.until(timeout: 2) do
+        overlay(name).style.include? 'height: 100%'
+      end
+    rescue
+      return false
     end
   end
 
