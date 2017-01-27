@@ -13,5 +13,5 @@ Then /^I should see the (.+) overlay$/ do |overlay|
 end
 
 Then /^I should see the main screen$/ do
-  raise unless App.index_page.overlay_visible? :none
+  raise unless App.index_page.overlays_closed?
 end
