@@ -5,7 +5,7 @@ class IndexPage < GenericPage
   def initialize(browser)
     super browser
     @url = EnvConfig.base_url
-    @trait = @browser.div(id: 'Toolbar') # RUBBISH TRAIT. NEEDS TO CHANGE
+    @trait = @browser.div(tid: 'toolbar') # RUBBISH TRAIT. NEEDS TO CHANGE
   end
 
   def char_div_mapper
@@ -31,46 +31,55 @@ class IndexPage < GenericPage
   end
 
   def track_bar
-    @browser.input(id: 'MatchupTrackBar')
+    @browser.input(tid: 'track-bar')
+  end
+
+  def overlay_button(button)
+    options = {
+      help:     'help-button',
+      about:    'about-button',
+      settings: 'settings-button',
+      share:    'share-button'
+    }
+    @browser.button(tid: options[button])
+  end
+
+  def overlay(name)
+    options = {
+      help:     'help-overlay',
+      about:    'about-overlay',
+      settings: 'settings-overlay',
+      share:    'share-overlay'
+    }
+    @browser.div(tid: options[name])
   end
 
   def click_overlay_button(button)
-    options = {
-      help: 'clickHelpNav()',
-      about: 'clickAboutNav()',
-      settings: 'clickSettingsNav()',
-      share: 'clickShareNav()'
-    }
-    @browser.div(id: 'Toolbar').button(onclick: options[button]).click
+    overlay_button(button).click
   end
 
-  def overlay_visible?(overlay)
-    options = {
-      none: '',
-      help: 'HelpOverlay',
-      about: 'AboutOverlay',
-      settings: 'SettingsOverlay',
-      share: 'ShareOverlay'
-    }
-    if overlay == :none
-      options.each do |key, screen|
-        next if key == :none
-        begin
-          Watir::Wait.until(timeout: 2) do
-            @browser.div(id: screen).style.include? 'height: 0%'
-          end
-        rescue
-          return false
-        end
-      end
-    elsif options.keys.include? overlay
+  def overlays_closed?
+    overlays = @browser.divs(tid: /.+-overlay/)
+    closed = true
+    overlays.each do |o|
       begin
         Watir::Wait.until(timeout: 2) do
-          @browser.div(id: options[overlay]).style.include? 'height: 100%'
+          o.style.include? 'height: 0%'
         end
       rescue
-        return false
+        closed = false
       end
+    end
+    return closed
+  end
+
+  def overlay_visible?(name)
+    begin
+      Watir::Wait.until(timeout: 2) do
+        overlay(name).style.include? 'height: 100%'
+      end
+    rescue
+      return false
     end
   end
 
@@ -110,7 +119,7 @@ class IndexPage < GenericPage
   end
 
   def set_range_input(value)
-    range = @browser.input(id: 'MatchupTrackBar')
+    range = @browser.input(tid: 'track-bar')
     range.click # Click to reset to 0
     if value.positive?
       value.times do
@@ -124,7 +133,7 @@ class IndexPage < GenericPage
   end
 
   def click_submit
-    @browser.div(class: 'MiddleSelectDiv').button(class: 'SubmitButton').click
+    @browser.button(tid: 'submit-matchup-button').click
   end
 
   def selected_characters_are?(params)
