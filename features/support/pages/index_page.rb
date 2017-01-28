@@ -54,6 +54,10 @@ class IndexPage < GenericPage
     @browser.div(tid: options[name])
   end
 
+  def submit_matchup_button
+    @browser.button(tid: 'submit-matchup-button')
+  end
+
   def click_overlay_button(button)
     overlay_button(button).click
   end
@@ -86,12 +90,15 @@ class IndexPage < GenericPage
   def assign_matchup_value(char1, char2, value)
     set_characters(char1, char2)
     set_range_input value
-    click_submit
+    submit_matchup_button.click
+  end
+
+  def character_div(char)
+    @browser.div(id: char_div_mapper[char.to_sym])
   end
 
   def click_character(char)
-    char_div = @browser.div(id: char_div_mapper[char.to_sym])
-    char_div.button.click
+    character_div(char).click
   end
 
   def set_characters(primary, secondary = :none)
@@ -130,10 +137,6 @@ class IndexPage < GenericPage
         range.send_keys :arrow_left
       end
     end
-  end
-
-  def click_submit
-    @browser.button(tid: 'submit-matchup-button').click
   end
 
   def selected_characters_are?(params)
