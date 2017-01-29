@@ -88,3 +88,82 @@ Then /^the matchup track bar should be enabled$/ do
     raise 'Track bar disabled. Expected to be enabled.'
   end
 end
+
+When /^I click the deselect button for the primary character$/ do
+  App.index_page.deselect_primary_character_button.click
+end
+
+Then /^no characters should be selected$/ do
+  raise "Primary character still selected" unless App.index_page.get_primary_character.nil?
+  raise "Secondary character still selected" unless App.index_page.get_secondary_character.nil?
+end
+
+When /^I click the primary character again$/ do
+  App.index_page.click_character @char1
+end
+
+When /^I click the deselect button for the secondary character$/ do
+  App.index_page.deselect_secondary_character_button.click
+end
+
+Then /^the primary character should be selected$/ do
+  unless App.index_page.primary_character_is? @char1
+    raise "Primary character selection error: Expected: #{@char1}. Got: #{App.index_page.get_primary_character}"
+  end
+end
+
+When /^I click the secondary character again$/ do
+  App.index_page.click_character @char2
+end
+
+Then /^the secondary character should be deselected$/ do
+  unless App.index_page.get_secondary_character.nil?
+    raise "Secondary character selection error: Expected: nil. Got: #{App.index_page.get_secondary_character}"
+  end
+end
+
+Given /^I have selected two characters who have a matchup value$/ do
+  @char1 = :garchomp
+  @char2 = :machamp
+  @matchup_value1 = 2
+  @matchup_value2 = -@matchup_value1
+  App.index_page.assign_matchup_value @char1, @char2, @matchup_value1
+end
+
+When /^I click delete matchup$/ do
+  App.index_page.delete_matchup_button.click
+end
+
+Then /^the matchup values should no longer be displayed$/ do
+  App.index_page.set_characters @char1, @char2
+  unless App.index_page.matchup_label_for(@char2).text == ''
+    raise "Error displaying matchup value. Expected: ''. Got: #{App.index_page.matchup_label_for(@char2).text}"
+  end
+  App.index_page.set_characters @char2, @char1
+  unless App.index_page.matchup_label_for(@char1).text == ''
+    raise "Error displaying matchup value. Expected: ''. Got: #{App.index_page.matchup_label_for(@char1).text}"
+  end
+end
+
+Then /^I should be asked to confirm deletion$/ do
+  raise "No confirmation box" unless App.browser.alert.exists?
+end
+
+When /^I confirm deletion$/ do
+  App.browser.alert.ok
+end
+
+When /^I cancel deletion$/ do
+  App.browser.alert.close
+end
+
+Then /^the matchup values should still be displayed$/ do
+  App.index_page.set_characters @char1, @char2
+  unless App.index_page.matchup_label_for(@char2).text == @matchup_value1.to_s
+    raise "Error displaying matchup value. Expected: #{@matchup_value1}. Got: #{App.index_page.matchup_label_for(@char2).text}"
+  end
+  App.index_page.set_characters @char2, @char1
+  unless App.index_page.matchup_label_for(@char1).text == @matchup_value2.to_s
+    raise "Error displaying matchup value. Expected: #{@matchup_value2}. Got: #{App.index_page.matchup_label_for(@char1).text}"
+  end
+end
