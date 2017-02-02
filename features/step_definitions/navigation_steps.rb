@@ -9,9 +9,9 @@ When /^I click the (.+) button(?: again)?$/ do |button|
 end
 
 Then /^I should see the (.+) overlay$/ do |overlay|
-  raise unless App.index_page.overlay_visible? overlay.to_sym
+  raise "#{overlay} not visible" unless App.index_page.overlay_visible? overlay.to_sym
 end
 
 Then /^I should see the main screen$/ do
-  raise unless App.index_page.overlays_closed?
+  raise "Main screen not visible" unless App.index_page.overlays_closed?
 end
