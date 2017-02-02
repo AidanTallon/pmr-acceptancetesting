@@ -217,4 +217,17 @@ class IndexPage < GenericPage
   def helper_text
     @browser.span(id: 'HelperText').text
   end
+
+  def toggle_matchups_button
+    @browser.button(tid: 'matchup-toggle-button')
+  end
+
+  def matchups_hidden?
+    text = toggle_matchups_button.text
+    if text =~ /hide/i
+      return false
+    elsif text =~ /show/i
+      return true
+    end
+  end
 end
