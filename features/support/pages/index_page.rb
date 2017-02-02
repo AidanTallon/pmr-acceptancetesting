@@ -230,4 +230,8 @@ class IndexPage < GenericPage
       return true
     end
   end
+
+  def input_data_from_yaml(data)
+    # TODO
+  end
 end
