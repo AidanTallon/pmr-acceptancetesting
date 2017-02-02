@@ -58,6 +58,18 @@ class IndexPage < GenericPage
     @browser.button(tid: 'submit-matchup-button')
   end
 
+  def deselect_primary_character_button
+    @browser.button(tid: 'deselect-primary-character-button')
+  end
+
+  def deselect_secondary_character_button
+    @browser.button(tid: 'deselect-secondary-character-button')
+  end
+
+  def delete_matchup_button
+    @browser.button(tid: 'delete-matchup-button')
+  end
+
   def click_overlay_button(button)
     overlay_button(button).click
   end
