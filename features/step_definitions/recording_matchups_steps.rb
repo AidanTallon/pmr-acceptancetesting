@@ -167,3 +167,9 @@ Then /^the matchup values should still be displayed$/ do
     raise "Error displaying matchup value. Expected: #{@matchup_value2}. Got: #{App.index_page.matchup_label_for(@char1).text}"
   end
 end
+
+Given /^two characters are selected$/ do
+  @char1 = :gengar
+  @char2 = :lucario
+  App.index_page.set_characters @char1, @char2
+end
