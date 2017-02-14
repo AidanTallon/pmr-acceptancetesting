@@ -8,11 +8,9 @@ Feature: Viewing Matchups
     Given I am on the index page
     And matchups have been recorded
 
-  @wip
   Scenario: Viewing matchups on main page
     Then I should see the recorded matchups on the main page
 
-  @wip
   Scenario: Toggling 'Show matchups' button
     When I decide to hide matchups
     Then I should not see the recorded matchups on the main page
