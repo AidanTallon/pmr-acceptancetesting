@@ -49,7 +49,7 @@ class EnvConfig
   end
 
   # Allow calls like EnvConfig.some_key
-  def self.respond_to?(name)
+  def self.respond_to?(name, includep_private = false)
     instance.config[name.to_s].nil? ? super : true
   end
 

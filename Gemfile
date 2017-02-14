@@ -10,5 +10,7 @@ gem 'redcarpet', '~>3.4.0'
 gem 'watir', '~>6.1.0'
 
 group :test do
+  gem 'ap'
+  gem 'awesome_print'
   gem 'rubocop', '~>0.47.1'
 end
