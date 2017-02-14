@@ -1,9 +1,10 @@
 Given /^matchups have been recorded$/ do
-  pending
+  @matchups_data = EnvConfig.data['test_matchups']
+  App.index_page.input_data_from_hash(@matchups_data)
 end
 
 Then /^I should see the recorded matchups on the main page$/ do
-  pending
+  App.index_page.assert_matchups_from_hash(@matchups_data)
 end
 
 When /^I decide to hide matchups$/ do

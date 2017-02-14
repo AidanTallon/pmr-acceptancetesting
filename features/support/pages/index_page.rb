@@ -8,6 +8,28 @@ class IndexPage < GenericPage
     @trait = @browser.div(tid: 'toolbar') # RUBBISH TRAIT. NEEDS TO CHANGE
   end
 
+  def char_index_mapper
+    [
+      'darkrai',
+      'blaziken',
+      'pikachu',
+      'lucario',
+      'gardevoir',
+      'pikachu_libre',
+      'sceptile',
+      'gengar',
+      'machamp',
+      'braixen',
+      'mewtwo',
+      'chandelure',
+      'suicune',
+      'weavile',
+      'charizard',
+      'garchomp',
+      'shadow_mewtwo'
+    ]
+  end
+
   def char_div_mapper
     { # Is subject to change!
       darkrai:       'CharDiv00',
@@ -145,7 +167,7 @@ class IndexPage < GenericPage
         range.send_keys :arrow_right
       end
     elsif value.negative?
-      -value.times do
+      (-value).times do
         range.send_keys :arrow_left
       end
     end
@@ -231,7 +253,35 @@ class IndexPage < GenericPage
     end
   end
 
-  def input_data_from_yaml(data)
-    # TODO
+  def input_data_from_hash(data)
+    data.each do |key, value|
+      pri_character = key.downcase.gsub(' ', '_').to_sym
+      set_characters pri_character
+      value.each_with_index do |matchup, i|
+        unless matchup.nil?
+          sec_character = char_index_mapper[i].to_sym
+          if matchup_label_for(sec_character).text == '' # Only input value if no matchup recorded
+            assign_matchup_value(key.downcase.gsub(' ', '_').to_sym, char_index_mapper[i].to_sym, matchup)
+          elsif matchup_label_for(sec_character).text != matchup.to_s # If matchup already recorded, make sure it is the same value
+            binding.pry
+            raise "Data error. Matchup values not consistent in data. Check values for #{pri_character}, #{sec_character}"
+          end
+        end
+      end
+    end
+  end
+
+  def assert_matchups_from_hash(data)
+    data.each do |key, value|
+      pri_character = key.downcase.gsub(' ', '_').to_sym
+      set_characters pri_character
+      value.each_with_index do |matchup, i|
+        sec_character = char_index_mapper[i].to_sym
+        expected_value = matchup.to_s
+        unless matchup_label_for(sec_character).text == expected_value
+          raise "Matchup label showing wrong value for #{pri_character}, #{sec_character}. Expected: #{expected_value}. Got: #{matchup_label_for(sec_character).text}."
+        end
+      end
+    end
   end
 end
