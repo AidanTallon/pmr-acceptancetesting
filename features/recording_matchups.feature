@@ -31,3 +31,39 @@ Feature: Recording matchups
   Scenario: One character selected
     When I click a character
     Then the matchup track bar should be disabled
+
+  Scenario: Deselecting primary character using deselect button
+    Given two characters are selected
+    When I click the deselect button for the primary character
+    Then no characters should be selected
+
+  Scenario: Deselecting primary character using character button
+    Given two characters are selected
+    When I click the primary character again
+    Then no characters should be selected
+
+  Scenario: Deselecting secondary character using deselect button
+    Given two characters are selected
+    When I click the deselect button for the secondary character
+    Then the primary character should be selected
+    And the secondary character should be deselected
+
+  Scenario: Deselecting secondary character using character button
+    Given two characters are selected
+    When I click the secondary character again
+    Then the primary character should be selected
+    And the secondary character should be deselected
+
+  Scenario: Deleting matchup using delete matchup button
+    Given I have selected two characters who have a matchup value
+    When I click delete matchup
+    Then I should be asked to confirm deletion
+    When I confirm deletion
+    Then the matchup values should no longer be displayed
+
+  Scenario: Nearly deleting matchup using delete matchup button
+    Given I have selected two characters who have a matchup value
+    When I click delete matchup
+    Then I should be asked to confirm deletion
+    When I cancel deletion
+    Then the matchup values should still be displayed
