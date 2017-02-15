@@ -82,7 +82,7 @@ class EnvConfig
       dir = Dir[File.dirname(__FILE__) + '/../features/support/data/*.yml']
       dir.each do |f|
         data = YAML.safe_load(File.open(f))
-        @test_data.merge!(data)
+        @test_data.merge!(data) unless data.nil?
         puts "Loaded #{f}"
       end
     end

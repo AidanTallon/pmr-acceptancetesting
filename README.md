@@ -125,8 +125,10 @@ Logic should be handled within an appropriate page object, so that the step defi
 |       |- env.rb             Environment settings
 |       |- hooks.rb           Hooks and setup code
 |       |- pages/             Page objects
-|       `- helpers/           Helper method
-|           |- watir.rb       Extend Watir to use custom attributes
+|       |- helpers/           Helper method
+|       |   `- watir.rb       Extend Watir to use custom attributes
+|       `- data/              Test data
+|
 |- bin/
 |   `- generate_docs_from_readme.rb
 `- results/                   Screenshots and HTML report
