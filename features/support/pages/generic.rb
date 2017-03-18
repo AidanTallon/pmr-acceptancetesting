@@ -9,6 +9,7 @@ class GenericPage
   def visit
     @browser.goto @url
     raise "Not on #{self.class.name} page" unless on_page?
+    return self
   end
 
   def on_page?
