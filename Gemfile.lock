@@ -1,30 +1,36 @@
+PATH
+  remote: ../cucumber-with
+  specs:
+    cucumber (3.0.0.pre.1)
+      builder (>= 2.1.2)
+      cucumber-core (~> 2.0)
+      cucumber-wire (~> 0.0.1)
+      diff-lcs (>= 1.1.3)
+      gherkin (~> 4.0)
+      multi_json (>= 1.7.5, < 2.0)
+      multi_test (>= 0.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
     archive-zip (0.7.0)
       io-like (~> 0.3.0)
     ast (2.3.0)
-    builder (3.2.2)
+    backports (3.7.0)
+    builder (3.2.3)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     chromedriver-helper (1.0.0)
       archive-zip (~> 0.7.0)
       nokogiri (~> 1.6)
     coderay (1.1.1)
-    cucumber (2.4.0)
-      builder (>= 2.1.2)
-      cucumber-core (~> 1.5.0)
-      cucumber-wire (~> 0.0.1)
-      diff-lcs (>= 1.1.3)
-      gherkin (~> 4.0)
-      multi_json (>= 1.7.5, < 2.0)
-      multi_test (>= 0.1.2)
-    cucumber-core (1.5.0)
+    cucumber-core (2.0.0)
+      backports (~> 3.6)
       gherkin (~> 4.0)
     cucumber-wire (0.0.1)
-    diff-lcs (1.2.5)
+    diff-lcs (1.3)
     ffi (1.9.14)
-    gherkin (4.0.0)
+    gherkin (4.1.1)
     io-like (0.3.0)
     method_source (0.8.2)
     mini_portile2 (2.1.0)
@@ -65,7 +71,7 @@ PLATFORMS
 
 DEPENDENCIES
   chromedriver-helper (~> 1.0.0)
-  cucumber (~> 2.4.0)
+  cucumber!
   pry (~> 0.10.4)
   rake (~> 12.0.0)
   redcarpet (~> 3.4.0)
@@ -73,4 +79,4 @@ DEPENDENCIES
   watir (~> 6.1.0)
 
 BUNDLED WITH
-   1.13.7
+   1.14.6

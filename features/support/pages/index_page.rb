@@ -32,11 +32,30 @@ class IndexPage < GenericPage
     }
   end
 
+  class AssignInterface
+    def initialize(index_page)
+      @index_page = index_page
+    end
+    def matchup(char1, char2, value)
+      @index_page.assign_matchup_value(char1, char2, value)
+      return self
+    end
+  end
+
   # Action Methods
+
+  def assign
+    return AssignInterface.new(self)
+  end
 
   def click_overlay_button(button)
     overlay_button(button).click
-    return self
+    case button
+      when :share
+        return App.share_page
+      else
+        return self
+    end
   end
 
   def assign_matchup_value(char1, char2, value)
