@@ -49,7 +49,7 @@ class EnvConfig
   end
 
   # Allow calls like EnvConfig.some_key
-  def self.respond_to?(name)
+  def self.respond_to?(name, include_private = false)
     instance.config[name.to_s].nil? ? super : true
   end
 
@@ -82,7 +82,7 @@ class EnvConfig
       dir = Dir[File.dirname(__FILE__) + '/../features/support/data/*.yml']
       dir.each do |f|
         data = YAML.safe_load(File.open(f))
-        @test_data.merge!(data)
+        @test_data.merge!(data) unless data.nil?
         puts "Loaded #{f}"
       end
     end
